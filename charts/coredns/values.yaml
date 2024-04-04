@@ -59,6 +59,7 @@ service:
   # If not set, a name is generated using the fullname template
   name: ""
   annotations: {}
+  selectorOverride: {}
 
 serviceAccount:
   create: false
@@ -376,3 +377,4 @@ deployment:
   name: ""
   ## Annotations for the coredns deployment
   annotations: {}
+  matchLabelsOverride: {}

@@ -20,9 +20,13 @@ metadata:
   {{- end }}
 spec:
   selector:
+    {{- if .Values.service.selectorOverride }}
+    {{- toYaml .Values.service.selectorOverride | nindent 4 }}
+    {{- else }}
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
     {{- if .Values.isClusterService }}
     k8s-app: {{ template "coredns.k8sapplabel" . }}
+    {{- end }}
     {{- end }}
     app.kubernetes.io/name: {{ template "coredns.name" . }}
   {{- if .Values.service.clusterIP }}

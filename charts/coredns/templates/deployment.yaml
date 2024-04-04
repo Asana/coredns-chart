@@ -30,11 +30,15 @@ spec:
       maxSurge: {{ .Values.rollingUpdate.maxSurge }}
   selector:
     matchLabels:
+      {{- if .Values.deployment.matchLabelsOverride }}
+      {{- toYaml .Values.deployment.matchLabelsOverride | nindent 6 }}
+      {{- else }}
       app.kubernetes.io/instance: {{ .Release.Name | quote }}
       {{- if .Values.isClusterService }}
       k8s-app: {{ template "coredns.k8sapplabel" . }}
       {{- end }}
       app.kubernetes.io/name: {{ template "coredns.name" . }}
+      {{- end }}
   template:
     metadata:
       labels:
