@@ -29,6 +29,9 @@ spec:
       maxUnavailable: {{ .Values.rollingUpdate.maxUnavailable }}
       maxSurge: {{ .Values.rollingUpdate.maxSurge }}
   selector:
+    {{- if .Values.deployment.selector }}
+    {{- toYaml .Values.deployment.selector | nindent 4 }}
+    {{- else }}
     matchLabels:
       {{- if .Values.deployment.matchLabelsOverride }}
       {{- toYaml .Values.deployment.matchLabelsOverride | nindent 6 }}
@@ -39,6 +42,7 @@ spec:
       {{- end }}
       app.kubernetes.io/name: {{ template "coredns.name" . }}
       {{- end }}
+    {{- end }}
   template:
     metadata:
       labels:
@@ -107,6 +111,10 @@ spec:
 {{- end }}
 {{- if .Values.extraVolumeMounts }}
 {{- toYaml .Values.extraVolumeMounts | nindent 8}}
+{{- end }}
+{{- if .Values.env }}
+        env:
+{{- toYaml .Values.env | nindent 10}}
 {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
